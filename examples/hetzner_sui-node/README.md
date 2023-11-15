@@ -1,4 +1,55 @@
-To run this example you need to execute:
+# terraform-hetzner-sui
+Deploy SUI node on Hetzner
+
+
+## Requirements to configure a SUI integration
+The requirements to configure a SUI integration include:
+
+* A Sui Full node. You can operate your own Sui Full node or use a Full node from a node operator.
+* Suggested hardware requirements to run a Sui Full node:
+   * CPU: 8 physical cores / 16 vCPUs
+   * RAM: 128 GB
+   * Storage (SSD): 4 TB NVMe drive
+
+For best results, run Sui Full nodes on Linux. Sui supports the Ubuntu and Debian distributions. You can also fun a Full node on macOS.
+
+## Deploy SUI-NODE
+
+### Create project on hetzner
+* Go to https://console.hetzner.cloud/
+* Press + New project and enter name of project 
+* Go to created project and Security 
+* Press add SSH key and upload your admin ssh public key with name "admin ssh key"
+* Go to API Tab and Create API Tokens
+
+### Prepare terraform directory structure and deploy 
+
+Example files you can take: 
+```bash
+git clone https://github.com/CroutonDigital/terraform-hetzner-sui.git
+cd terraform-hetzner-sui/examples/hetzner_sui-node
+```
+
+Example how to use module: 
+```yaml
+variable "hcloud_token" {
+  sensitive = true
+  default   = ""
+}
+
+module "sui" {
+  source         = "CroutonDigital/sui/hetzner"
+  version        = "0.0.2"
+  hcloud_token   = var.hcloud_token
+  service_name   = "sui-node"
+  server_type    = "cpx11"
+  os_base_image  = "debian-12"
+  volume_size    = 30
+  # mainnet / testnet / devnet Used for download genesis and docker image
+  sui_network    = "mainnet"
+  app_version    = "mainnet"
+}
+```
 
 ```bash
 export TF_VAR_hcloud_token="PUT HEZTNER API TOKEN"
@@ -6,58 +57,15 @@ export TF_VAR_hcloud_token="PUT HEZTNER API TOKEN"
 $ terraform init
 $ terraform plan
 $ terraform apply
+
+# Print SUI-NODE ip
+$ terraform output 
 ```
 
 Run `terraform destroy` when you don't need these resources.
 
-<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+### Login to SUI-NODE inside VM
 
-| Name | Version |
-|------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 4.0 |
-
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | >= 4.0 |
-
-## Modules
-
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_iam_assumable_roles_with_saml"></a> [iam\_assumable\_roles\_with\_saml](#module\_iam\_assumable\_roles\_with\_saml) | ../../modules/iam-assumable-roles-with-saml | n/a |
-| <a name="module_iam_assumable_roles_with_saml_custom"></a> [iam\_assumable\_roles\_with\_saml\_custom](#module\_iam\_assumable\_roles\_with\_saml\_custom) | ../../modules/iam-assumable-roles-with-saml | n/a |
-| <a name="module_iam_assumable_roles_with_saml_second_provider"></a> [iam\_assumable\_roles\_with\_saml\_second\_provider](#module\_iam\_assumable\_roles\_with\_saml\_second\_provider) | ../../modules/iam-assumable-roles-with-saml | n/a |
-| <a name="module_iam_assumable_roles_with_saml_with_self_assume"></a> [iam\_assumable\_roles\_with\_saml\_with\_self\_assume](#module\_iam\_assumable\_roles\_with\_saml\_with\_self\_assume) | ../../modules/iam-assumable-roles-with-saml | n/a |
-
-## Resources
-
-| Name | Type |
-|------|------|
-| [aws_iam_saml_provider.idp_saml](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_saml_provider) | resource |
-| [aws_iam_saml_provider.second_idp_saml](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_saml_provider) | resource |
-
-## Inputs
-
-No inputs.
-
-## Outputs
-
-| Name | Description |
-|------|-------------|
-| <a name="output_admin_iam_role_arn"></a> [admin\_iam\_role\_arn](#output\_admin\_iam\_role\_arn) | ARN of admin IAM role |
-| <a name="output_admin_iam_role_name"></a> [admin\_iam\_role\_name](#output\_admin\_iam\_role\_name) | Name of admin IAM role |
-| <a name="output_admin_iam_role_path"></a> [admin\_iam\_role\_path](#output\_admin\_iam\_role\_path) | Path of admin IAM role |
-| <a name="output_admin_iam_role_unique_id"></a> [admin\_iam\_role\_unique\_id](#output\_admin\_iam\_role\_unique\_id) | Unique ID of IAM role |
-| <a name="output_poweruser_iam_role_arn"></a> [poweruser\_iam\_role\_arn](#output\_poweruser\_iam\_role\_arn) | ARN of poweruser IAM role |
-| <a name="output_poweruser_iam_role_name"></a> [poweruser\_iam\_role\_name](#output\_poweruser\_iam\_role\_name) | Name of poweruser IAM role |
-| <a name="output_poweruser_iam_role_path"></a> [poweruser\_iam\_role\_path](#output\_poweruser\_iam\_role\_path) | Path of poweruser IAM role |
-| <a name="output_poweruser_iam_role_unique_id"></a> [poweruser\_iam\_role\_unique\_id](#output\_poweruser\_iam\_role\_unique\_id) | Unique ID of IAM role |
-| <a name="output_readonly_iam_role_arn"></a> [readonly\_iam\_role\_arn](#output\_readonly\_iam\_role\_arn) | ARN of readonly IAM role |
-| <a name="output_readonly_iam_role_name"></a> [readonly\_iam\_role\_name](#output\_readonly\_iam\_role\_name) | Name of readonly IAM role |
-| <a name="output_readonly_iam_role_path"></a> [readonly\_iam\_role\_path](#output\_readonly\_iam\_role\_path) | Path of readonly IAM role |
-| <a name="output_readonly_iam_role_unique_id"></a> [readonly\_iam\_role\_unique\_id](#output\_readonly\_iam\_role\_unique\_id) | Unique ID of IAM role |
-<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+```bash
+ssh root@<sui node ip>
+```

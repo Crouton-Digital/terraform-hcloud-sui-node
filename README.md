@@ -15,6 +15,21 @@ For best results, run Sui Full nodes on Linux. Sui supports the Ubuntu and Debia
 
 ## Deploy SUI-NODE
 
+### Create project on hetzner
+* Go to https://console.hetzner.cloud/
+* Press + New project and enter name of project 
+* Go to created project and Security 
+* Press add SSH key and upload your admin ssh public key with name "admin ssh key"
+* Go to API Tab and Create API Tokens
+
+### Prepare terraform directory structure and deploy 
+
+Example files you can take: 
+```bash
+git clone https://github.com/CroutonDigital/terraform-hetzner-sui.git
+cd terraform-hetzner-sui/examples/hetzner_sui-node
+```
+
 Example how to use module: 
 ```yaml
 variable "hcloud_token" {
@@ -42,8 +57,15 @@ export TF_VAR_hcloud_token="PUT HEZTNER API TOKEN"
 $ terraform init
 $ terraform plan
 $ terraform apply
+
+# Print SUI-NODE ip
+$ terraform output 
 ```
 
 Run `terraform destroy` when you don't need these resources.
 
+### Login to SUI-NODE inside VM
 
+```bash
+ssh root@<sui node ip>
+```

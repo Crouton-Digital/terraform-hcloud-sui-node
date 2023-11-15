@@ -5,7 +5,7 @@ variable "hcloud_token" {
 
 module "sui" {
   source         = "CroutonDigital/sui/hetzner"
-  version        = "0.0.2"
+  version        = "0.0.3"
   hcloud_token   = var.hcloud_token
   service_name   = "sui-node"
   server_type    = "cpx11"
@@ -14,4 +14,8 @@ module "sui" {
   # mainnet / testnet / devnet Used for download genesis and docker image
   sui_network    = "mainnet"
   app_version    = "mainnet"
+}
+
+output "node_host_ip" {
+  value = module.sui.node_host_ip
 }
