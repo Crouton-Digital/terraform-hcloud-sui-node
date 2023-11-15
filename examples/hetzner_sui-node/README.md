@@ -39,12 +39,12 @@ variable "hcloud_token" {
 
 module "sui" {
   source         = "CroutonDigital/sui/hetzner"
-  version        = "0.0.2"
+  version        = "0.0.4" # Set last module version 
   hcloud_token   = var.hcloud_token
   service_name   = "sui-node"
   server_type    = "cpx11"
   os_base_image  = "debian-12"
-  volume_size    = 30
+  volume_size    = 500
   # mainnet / testnet / devnet Used for download genesis and docker image
   sui_network    = "mainnet"
   app_version    = "mainnet"
