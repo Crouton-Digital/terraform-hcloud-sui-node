@@ -39,7 +39,7 @@ variable "hcloud_token" {
 
 module "sui" {
   source         = "CroutonDigital/sui/hetzner"
-  version        = "0.0.5" # Set last module version 
+  version        = "0.0.6" # Set last module version 
   hcloud_token   = var.hcloud_token
   service_name   = "sui-node"
   server_type    = "cpx11"
