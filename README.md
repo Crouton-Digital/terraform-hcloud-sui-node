@@ -12,3 +12,7 @@ The requirements to configure a SUI integration include:
    * Storage (SSD): 4 TB NVMe drive
 
 For best results, run Sui Full nodes on Linux. Sui supports the Ubuntu and Debian distributions. You can also fun a Full node on macOS.
+
+## 
+
+export TF_VAR_hcloud_token = ""

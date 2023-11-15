@@ -8,15 +8,25 @@ resource "hcloud_firewall" "sui" {
     ]
   }
 
-#  rule {
-#    direction = "in"
-#    protocol  = "tcp"
-#    port      = "5432"
-#    source_ips = [
-#      "0.0.0.0/0",
-#      "::/0"
-#    ]
-#  }
+  rule {
+    direction = "in"
+    protocol  = "udp"
+    port      = "8084"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "8084"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
 
   rule {
     direction = "in"
