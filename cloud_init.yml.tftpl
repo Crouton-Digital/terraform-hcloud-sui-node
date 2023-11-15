@@ -73,6 +73,6 @@ runcmd:
   - systemctl enable docker
   - systemctl daemon-reload && systemctl enable docker-up.service
   - wget https://github.com/MystenLabs/sui/raw/main/crates/sui-config/data/fullnode-template.yaml -O /opt/service/volumes/fullnode.yaml
-  - wget https://github.com/MystenLabs/sui-genesis/raw/main/${version}/genesis.blob -O /opt/service/volumes/genesis.blob
+  - wget https://github.com/MystenLabs/sui-genesis/raw/main/${sui_network}/genesis.blob -O /opt/service/volumes/genesis.blob
   - sed -i 's/127.0.0.1/0.0.0.0/' /opt/service/volumes/fullnode.yaml
   - shutdown -r now

@@ -1,9 +1,3 @@
-resource "random_string" "sui_root_password" {
-  length  = 16
-  special = true
-  override_special = "!#$%&*()-_=+[]{}<>:?"
-}
-
 resource "hcloud_server" "sui" {
   name          = "sui-${var.service_name}"
   image         = var.os_base_image
@@ -14,6 +8,7 @@ resource "hcloud_server" "sui" {
   user_data     = templatefile("${path.module}/cloud_init.yml.tftpl", {
     opt                 = hcloud_volume.sui.linux_device
     version             = var.app_version
+    sui_network         = var.sui_network
   })
 
   public_net {
